@@ -1,0 +1,25 @@
+---
+import { site } from '../data/site';
+
+const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURIComponent(site.rsvp.whatsappMessage)}`;
+---
+
+<footer class="bg-charcoal px-4 py-14 text-center text-ivory/90 sm:px-6">
+  <div class="mx-auto max-w-3xl">
+    <p class="font-display text-2xl sm:text-3xl">{site.coupleNames}</p>
+    <p class="mt-3 text-sm tracking-[0.3em] text-gold-400">{site.hashtag}</p>
+    <div class="mx-auto mt-6 h-px w-16 bg-gold-500/70"></div>
+
+    <p class="mt-6 text-sm text-ivory/70">{site.weddingDateLabel} · {site.city}</p>
+
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+      <a class="transition hover:text-gold-400" href={`mailto:${site.contacts.email}`}>{site.contacts.email}</a>
+      <a class="transition hover:text-gold-400" href={waHref} target="_blank" rel="noopener">
+        WhatsApp {site.contacts.phoneLabel}
+      </a>
+      <a class="transition hover:text-gold-400" href="/calendar.ics">Adicionar ao calendário 📅</a>
+    </div>
+
+    <p class="mt-10 text-xs text-ivory/50">Feito com ❤️ pelos noivos · {new Date().getFullYear()}</p>
+  </div>
+</footer>

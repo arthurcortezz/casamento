@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#46513b"/>
+      <stop offset="1" stop-color="#6f8061"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1050" cy="80" r="160" fill="none" stroke="#d4b96a" stroke-width="3" opacity="0.35"/>
+  <circle cx="150" cy="560" r="200" fill="none" stroke="#fbf8f1" stroke-width="2" opacity="0.2"/>
+  <text x="600" y="290" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="95" fill="#fbf8f1">Arthur &amp; Emanuela</text>
+  <text x="600" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="40" fill="#d4b96a">10 · Janeiro · 2027</text>
+  <text x="600" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#fbf8f1" opacity="0.75">TODO: substitua este arquivo por uma foto real em JPG (og-cover.jpg) para melhor compartilhamento</text>
+</svg>

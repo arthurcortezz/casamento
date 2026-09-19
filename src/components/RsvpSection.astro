@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+
+const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURIComponent(site.rsvp.whatsappMessage)}`;
+---
+
+<section id="rsvp" class="bg-gradient-to-b from-sage-800 to-sage-700 py-20 text-ivory sm:py-28">
+  <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
+    <p class="reveal text-xs font-semibold uppercase tracking-[0.4em] text-gold-400 sm:text-sm">Sua presença</p>
+    <h2 class="reveal mt-4 font-display text-3xl sm:text-5xl">Confirme presença até {site.rsvp.rsvpDeadline}</h2>
+    <p class="reveal mt-6 text-ivory/85">
+      Sua presença é muito importante para nós — o formulário leva menos de 1 minuto para preencher. 💛
+    </p>
+
+    <div class="reveal mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <a
+        href={site.rsvp.googleFormUrl}
+        target="_blank"
+        rel="noopener"
+        class="w-72 rounded-full bg-gold-500 px-8 py-3.5 font-bold text-white shadow-soft transition hover:bg-gold-600 sm:w-auto"
+      >
+        Confirmar pelo formulário
+      </a>
+      <a
+        href={waHref}
+        target="_blank"
+        rel="noopener"
+        class="w-72 rounded-full border border-ivory/50 px-8 py-3.5 font-semibold text-ivory transition hover:bg-ivory/10 sm:w-auto"
+      >
+        Confirmar pelo WhatsApp
+      </a>
+    </div>
+
+    <p class="reveal mt-8 text-sm text-ivory/70">
+      <a href="/calendar.ics" class="underline decoration-gold-400 underline-offset-4 transition hover:text-gold-400">
+        📅 Adicionar ao meu calendário
+      </a>
+      · Dúvidas? Fale com a gente pelo WhatsApp ou pelo e-mail {site.contacts.email}
+    </p>
+  </div>
+</section>

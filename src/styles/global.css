@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ✏️ Personalize: fontes (troque também o <link> no Base.astro) */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Lato', ui-sans-serif, system-ui, sans-serif;
+
+  /* ✏️ Personalize: paleta de cores do casamento */
+  --color-ivory: #fbf8f1;
+  --color-sand: #f3ecdd;
+  --color-sage-100: #eef1e8;
+  --color-sage-200: #d9e0cf;
+  --color-sage-300: #bcc8ac;
+  --color-sage-500: #8a9a7b;
+  --color-sage-600: #6f8061;
+  --color-sage-800: #46513b;
+
+  --color-gold-400: #d4b96a;
+  --color-gold-500: #c2a24b;
+  --color-gold-600: #a3853a;
+
+  --color-charcoal: #3b382f;
+  --color-rose-400: #d9a7a7;
+
+  --shadow-soft: 0 10px 30px -12px rgb(70 81 59 / 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Compensar o header fixo ao navegar por âncoras */
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* Animação de revelar ao rolar */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* FAQ (accordion com <details>) */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+.faq-chevron {
+  transition: transform 0.25s ease;
+}
+details[open] .faq-chevron {
+  transform: rotate(180deg);
+}

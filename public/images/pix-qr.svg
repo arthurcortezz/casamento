@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <rect width="300" height="300" rx="16" fill="#ffffff"/>
+  <rect x="10" y="10" width="280" height="280" rx="12" fill="none" stroke="#46513b" stroke-width="2" stroke-dasharray="10 8"/>
+  <!-- cantos estilo QR -->
+  <rect x="28" y="28" width="52" height="52" fill="none" stroke="#46513b" stroke-width="8"/>
+  <rect x="220" y="28" width="52" height="52" fill="none" stroke="#46513b" stroke-width="8"/>
+  <rect x="28" y="220" width="52" height="52" fill="none" stroke="#46513b" stroke-width="8"/>
+  <!-- pontos falsos -->
+  <g fill="#8a9a7b">
+    <rect x="110" y="40" width="16" height="16"/><rect x="150" y="60" width="16" height="16"/>
+    <rect x="120" y="100" width="16" height="16"/><rect x="170" y="120" width="16" height="16"/>
+    <rect x="60" y="120" width="16" height="16"/><rect x="100" y="180" width="16" height="16"/>
+    <rect x="150" y="200" width="16" height="16"/><rect x="200" y="160" width="16" height="16"/>
+    <rect x="210" y="220" width="16" height="16"/><rect x="120" y="240" width="16" height="16"/>
+  </g>
+  <text x="150" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#3b382f">QR Code Pix</text>
+  <text x="150" y="194" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6f8061">(placeholder — gere o QR</text>
+  <text x="150" y="209" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6f8061">real no app do banco)</text>
+</svg>
