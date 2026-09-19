@@ -11,7 +11,7 @@ export const pix = {
   keyType: 'E-mail',
   holder: 'Arthur e Emanuela',
   bank: 'Banco — TODO',
-  city: 'Belo Horizonte',
+  city: 'Maceió',
   /**
    * TODO: gere o QR Code Pix no app do seu banco (ou site do seu banco)
    * e salve como public/images/pix-qr.png — depois troque a extensão abaixo.

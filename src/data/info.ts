@@ -6,61 +6,70 @@
 /** Linha do tempo "Nossa História" — Arthur & Emanuela 💛 */
 export const story = [
   {
-    /** TODO: confira o ano em que vocês se conheceram */
-    year: '2020',
+    year: '2019',
     icon: '🎬',
     title: 'O primeiro emprego, o primeiro olhar',
     text: 'Tudo começou no cinema do shopping, no nosso primeiro emprego. Entre uma sessão e outra, o clima rolou de cara — e foi ali, no meio das pipocas e dos ingressos, que a nossa história começou.',
   },
   {
-    /** TODO: ajuste o período e acrescentem as memórias favoritas dessa fase */
-    year: '2020 – 2025',
-    icon: '🍿',
+    year: '2019 – 2020',
+    icon: '🤫',
     title: 'O namoro escondido',
-    text: 'Foram anos de sessões secretas e olhares cúmplices entre uma sala e outra: namoro escondido no cinema — e fora dele também. Do que era sigilo nasceu um amor que já soma 6 anos.',
+    text: 'Foram meses de sessões secretas e olhares cúmplices entre uma sala e outra: namoro escondido no cinema — e fora dele também. Até que, em novembro de 2019, o segredo virou oficial: começamos a namorar!',
   },
   {
-    /** TODO: confira o ano do pedido e conte como foi */
-    year: '2025',
+    year: '05/2025',
     icon: '💍',
     title: 'O pedido',
-    text: 'Seis anos depois daquele primeiro olhar, veio o pedido — e o "sim" que virou noivado. Um ano de noivado depois, falta pouco para o dia mais esperado: o nosso casamento!',
+    text: 'Estava tudo planejado: pousada na praia do Patacho, jantar romântico e o pedido no rooftop do restaurante. Mas a chuva e o vento mudaram os planos. Depois do jantar, ali mesmo na pousada, veio a pergunta — e, depois de muitas lágrimas de alegria, o "sim". Nem a chuva apagou esse momento: foi perfeito do jeito que aconteceu. 💛',
+  },
+  {
+    year: '10/01/2027',
+    icon: '🥂',
+    title: 'O grande dia',
+    text: 'O próximo capítulo: o nosso casamento! A festa será no Recanto Giardino, em Maceió — e nada disso estaria completo sem vocês ali para celebrar com a gente. 💛',
   },
 ];
 
-/** Cerimônia e recepção (cada uma com endereço próprio) */
+/** O grande dia: sem cerimônia — a festa é o evento! (layout se adapta a 1 card) */
 export const events = [
-  {
-    icon: '⛪',
-    name: 'Cerimônia',
-    time: '16h',
-    /** TODO: confirme o horário */
-    dateLabel: 'Domingo, 10/01/2027',
-    place: 'TODO: nome da igreja/espaço da cerimônia',
-    address: 'TODO: endereço completo da cerimônia',
-    note: 'Chegue com pelo menos 30 minutos de antecedência.',
-  },
   {
     icon: '🥂',
     name: 'Recepção',
-    time: '19h',
-    /** TODO: confirme o horário */
+    time: '16h30',
     dateLabel: 'Domingo, 10/01/2027',
-    place: 'TODO: nome do salão/espaço da recepção',
-    address: 'TODO: endereço completo da recepção',
-    note: 'TODO: descrevam a recepção — jantar, brinde, festa...',
+    place: 'Recanto Giardino',
+    address: 'R. Silvio Sandes Torres Júnior, 153 - A — Barro Duro, Maceió — AL, 57045-260',
+    note: 'Depois do "sim", uma tarde para celebrar, agradecer e brindar ao que vem pela frente. 💛',
   },
 ];
 
 export const dressCode = {
-  title: 'Traje Passeio Completo',
+  /** ✏️ Ajuste livremente — textos pensados para o estilo do casal */
+  title: 'Elegante, sem formalidade',
   description:
-    'TODO: descreva o dress code com suas palavras — ex.: "queremos ver vocês elegantes e confortáveis para celebrar com a gente".',
-  suggestions: ['Vestidos longos ou midis', 'Ternos ou smoking', 'Sapatos fechados'],
+    'Queremos vê-los bonitos e à vontade para celebrar com a gente. Não é necessário traje de gala: capriche no estilo e no conforto — tem festa (e muita dança) pela frente!',
+
+  female: {
+    icon: '👗',
+    title: 'Traje feminino',
+    items: [
+      'Vestidos, macacões ou conjuntos são ótimas opções',
+      'Não é necessário vestido de festa',
+    ],
+    tip: 'Escolha peças em que se sinta linda e confortável para dançar a noite toda.',
+  },
+  male: {
+    icon: '👔',
+    title: 'Traje masculino',
+    items: ['Calça e camisa', 'Não é necessário terno nem gravata'],
+    tip: 'Blazer é opcional — para quem quiser caprichar, fica elegante do mesmo jeito.',
+  },
+
   avoid: [
     'Branco, off-white e nude (reservados à noiva)',
-    'Jeans, regatas e tênis esportivo',
-    'Estampas muito chamativas',
+    'Roupas muito casuais: jeans com regata, chinelo de praia',
+    'Cores neon e estampas muito chamativas',
   ],
 };
 
@@ -68,11 +77,11 @@ export const dressCode = {
 export const notices = [
   {
     icon: '👶',
-    text: 'A recepção será apenas para adultos. Bebês de colo são bem-vindos na cerimônia. TODO: ajuste à sua realidade.',
+    text: 'Crianças de até 8 anos não pagam.',
   },
   {
     icon: '⏰',
-    text: 'Pontualidade: a cerimônia começará pontualmente às 16h.',
+    text: 'Pontualidade: a festa começará pontualmente às 16h30.',
   },
   {
     icon: '💐',
@@ -84,15 +93,11 @@ export const notices = [
 export const faq = [
   {
     q: 'Posso levar crianças?',
-    a: 'TODO: explique sua regra. Ex.: "A recepção é somente para adultos; a cerimônia está aberta a toda a família."',
+    a: 'Podem sim! Crianças de até 8 anos não pagam.',
   },
   {
     q: 'Posso levar acompanhante?',
-    a: 'TODO: ex.: "Os convites são nominais. Confirme no formulário o número exato de pessoas que virão com você."',
-  },
-  {
-    q: 'Haverá estacionamento?',
-    a: 'Sim! O salão conta com estacionamento gratuito. Mais detalhes na seção Local.',
+    a: 'O convite é nominal, e pessoas a mais pagam individualmente. Confirme no formulário o número exato de pessoas que vão com você.',
   },
   {
     q: 'Até quando posso confirmar presença?',
@@ -101,9 +106,5 @@ export const faq = [
   {
     q: 'Como funciona a lista de presentes?',
     a: 'Escolha um item na lista e presenteie direto na loja pelo link, ou use nosso Pix. Sua presença já é o nosso maior presente! 🎁',
-  },
-  {
-    q: 'Onde posso me hospedar?',
-    a: 'Selecionamos hotéis com boa localização e valores para todos os bolsos — veja a seção Local.',
   },
 ];

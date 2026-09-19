@@ -10,12 +10,11 @@ export const site = {
   /** Ordem exibida no site — o hero e o monograma derivam daqui */
   coupleNames: 'Arthur & Emanuela',
 
-  /** TODO: confirme o horário (mantive 16h como exemplo) */
-  weddingDateISO: '2027-01-10T16:00:00-03:00',
+  /** Horário da festa (não haverá cerimônia) */
+  weddingDateISO: '2027-01-10T16:30:00-03:00',
   weddingDateLabel: 'Domingo, 10 de janeiro de 2027',
-  weddingTimeLabel: '16h',
-  /** TODO: cidade onde vai ser o casamento */
-  city: 'TODO: cidade do casamento',
+  weddingTimeLabel: '16h30',
+  city: 'Maceió · Alagoas',
   hashtag: '#ArthurEmanuela2027',
 
   rsvp: {

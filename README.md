@@ -26,7 +26,7 @@ Tudo está em **`src/data/`** — os campos marcados com `TODO` são placeholder
 | --------------- | ------------------------------------------------------------------------ |
 | `src/data/site.ts` | Nomes, **data/hora** (formato ISO), cidade, hashtag, RSVP, contatos    |
 | `src/data/info.ts` | Nossa história, cerimônia/recepção, dress code, avisos, FAQ            |
-| `src/data/venue.ts`| Salão, endereço, estacionamento, transporte, hotéis                    |
+| `src/data/venue.ts`| Local, endereço, transporte, hotéis                                    |
 | `src/data/gifts.ts`| Lista de presentes, links das lojas, **dados do Pix**                  |
 
 Outros pontos para personalizar:
@@ -42,7 +42,7 @@ Outros pontos para personalizar:
 - [ ] Data e hora reais (`site.ts` → `weddingDateISO` e rótulos)
 - [ ] Google Forms criado + link em `site.ts → rsvp.googleFormUrl`
 - [ ] WhatsApp real em formato internacional (`55DD9XXXXXXXX`)
-- [ ] Endereços reais da cerimônia e recepção (`info.ts` e `venue.ts`)
+- [x] Horário da festa: 16h30 (não haverá cerimônia)
 - [ ] Links reais dos presentes e dados do Pix (`gifts.ts`)
 - [ ] QR Code Pix real salvo em `public/images/`
 - [ ] Foto de capa para compartilhamento (og-image)

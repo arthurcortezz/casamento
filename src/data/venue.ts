@@ -1,37 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════
- * ✏️  EDITE: informações do local da recepção, estacionamento,
+ * ✏️  EDITE: informações do local (Recanto Giardino — Maceió/AL),
  *  transporte e hotéis próximos
  * ═══════════════════════════════════════════════════════════════ */
 
 export const venue = {
-  /** TODO: nome e endereço do salão/local da recepção */
-  name: 'Salão Bela Vista',
-  address: 'Av. das Palmeiras, 456 — Bairro Nobre, Belo Horizonte — MG',
+  name: 'Recanto Giardino',
 
-  /** TODO: dicas de chegada */
-  parking: 'Estacionamento gratuito no local, com manobrista e 120 vagas. TODO: ajuste os detalhes.',
-  transit:
-    'A 15 min do centro de carro. Uber e táxi são as melhores opções na volta — a portaria faz o chamado. TODO.',
+  address: 'R. Silvio Sandes Torres Júnior, 153 - A — Barro Duro, Maceió — AL, 57045-260',
 
-  /** TODO: hotéis próximos com valores negociados, se houver */
-  hotels: [
-    {
-      name: 'Hotel Central Plaza',
-      distance: '2,5 km do salão',
-      note: 'Conforto ★★★★ — café da manhã incluso',
-      url: 'https://www.google.com/search?q=hotel+central+plaza',
-    },
-    {
-      name: 'Pousada Vila Nova',
-      distance: '4 km do salão',
-      note: 'Opção econômica e charmosa',
-      url: 'https://www.google.com/search?q=pousada+vila+nova',
-    },
-    {
-      name: 'Grand Plaza Business',
-      distance: '3 km do salão',
-      note: 'Ideal para quem chega de viagem',
-      url: 'https://www.google.com/search?q=grand+plaza+business',
-    },
-  ],
+  /** Texto de busca usado para localizar o espaço no Google Maps (mapa e rota) */
+  mapQuery: 'R. Silvio Sandes Torres Júnior, 153 - A, Barro Duro, Maceió - AL, 57045-260',
 };

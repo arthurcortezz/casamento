@@ -20,7 +20,8 @@ export const GET: APIRoute = () => {
   // Duração estimada do evento: 6 horas (cerimônia + recepção)
   const end = toIcsDate(new Date(new Date(site.weddingDateISO).getTime() + 6 * 60 * 60 * 1000).toISOString());
   const stamp = toIcsDate(new Date().toISOString());
-  const location = events[1]?.address ?? events[0]?.address ?? '';
+  // Local do evento (recepção) — nome do espaço + cidade
+  const location = `${events[1]?.place ?? events[0]?.place ?? ''} — ${site.city}`;
 
   const ics = [
     'BEGIN:VCALENDAR',
@@ -36,7 +37,7 @@ export const GET: APIRoute = () => {
     `SUMMARY:${escapeIcs(`Casamento de ${site.coupleNames}`)}`,
     `LOCATION:${escapeIcs(location)}`,
     `DESCRIPTION:${escapeIcs(
-      `Cerimônia às ${site.weddingTimeLabel} e recepção em seguida. Confirme sua presença! ${site.hashtag}`,
+      `A festa de casamento começa às ${site.weddingTimeLabel}. Confirme sua presença! ${site.hashtag}`,
     )}`,
     'STATUS:CONFIRMED',
     'BEGIN:VALARM',
