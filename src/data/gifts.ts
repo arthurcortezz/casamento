@@ -7,10 +7,10 @@ export const giftsIntro =
 
 export const pix = {
   /** TODO: dados reais do Pix dos noivos */
-  key: 'mariaejoao@email.com',
-  keyType: 'E-mail',
-  holder: 'Arthur e Emanuela',
-  bank: 'Banco — TODO',
+  key: '82998072790',
+  keyType: 'Telefone',
+  holder: 'Arthur de Omena Cortez',
+  bank: 'Banco — Mercado Pago',
   city: 'Maceió',
   /**
    * TODO: gere o QR Code Pix no app do seu banco (ou site do seu banco)

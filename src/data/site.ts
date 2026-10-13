@@ -1,16 +1,9 @@
-/* ═══════════════════════════════════════════════════════════════
- * ✏️  EDITE ESTE ARQUIVO: dados principais do casamento
- *  Todos os textos abaixo são EXEMPLO — substitua pelos reais.
- * ═══════════════════════════════════════════════════════════════ */
-
 export const site = {
   bride: { name: 'Emanuela', initials: 'E' },
   groom: { name: 'Arthur', initials: 'A' },
 
-  /** Ordem exibida no site — o hero e o monograma derivam daqui */
   coupleNames: 'Arthur & Emanuela',
 
-  /** Horário da festa (não haverá cerimônia) */
   weddingDateISO: '2027-01-10T16:30:00-03:00',
   weddingDateLabel: 'Domingo, 10 de janeiro de 2027',
   weddingTimeLabel: '16h30',
@@ -18,17 +11,14 @@ export const site = {
   hashtag: '#ArthurEmanuela2027',
 
   rsvp: {
-    /** TODO: crie o Google Forms e cole o link aqui (passo a passo no README) */
-    googleFormUrl: 'https://docs.google.com/forms/d/SEU-FORMULARIO-AQUI',
+    googleFormUrl: 'https://forms.gle/QDj9fnm8xEMYxxFV9',
     rsvpDeadline: '10 de dezembro de 2026',
-    /** TODO: WhatsApp para confirmações (formato internacional, só números) */
-    whatsappNumber: '5531900000000',
+    whatsappNumber: '5582998072790',
     whatsappMessage: 'Olá! Quero confirmar minha presença no casamento de Arthur & Emanuela 💍',
   },
 
   contacts: {
-    /** TODO: e-mail e telefone reais dos noivos */
     email: 'arthur.emanuela@email.com',
-    phoneLabel: '(XX) 90000-0000',
+    phoneLabel: '(82) 99807-2790',
   },
 };

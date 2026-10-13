@@ -13,7 +13,6 @@ const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURICompon
     <p class="mt-6 text-sm text-ivory/70">{site.weddingDateLabel} · {site.city}</p>
 
     <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
-      <a class="transition hover:text-gold-400" href={`mailto:${site.contacts.email}`}>{site.contacts.email}</a>
       <a class="transition hover:text-gold-400" href={waHref} target="_blank" rel="noopener">
         WhatsApp {site.contacts.phoneLabel}
       </a>
