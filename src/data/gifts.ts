@@ -6,84 +6,77 @@ export const giftsIntro =
   'Sua presença é o nosso maior presente! Se quiser nos mimar, ficamos felizes com qualquer um destes mimos. 🎁';
 
 export const pix = {
-  /** TODO: dados reais do Pix dos noivos */
   key: '82998072790',
   keyType: 'Telefone',
+  qrKey: '+5582998072790',
   holder: 'Arthur de Omena Cortez',
   bank: 'Banco — Mercado Pago',
   city: 'Maceió',
-  /**
-   * TODO: gere o QR Code Pix no app do seu banco (ou site do seu banco)
-   * e salve como public/images/pix-qr.png — depois troque a extensão abaixo.
-   */
-  qrImage: '/images/pix-qr.svg',
 };
 
 export interface Gift {
   icon: string;
   name: string;
   description: string;
-  price: string;
-  /** Link direto do produto na loja (Magalu, Amazon, Havan...) */
-  url: string;
+  price: number;
+  mercadoPagoUrl?: string;
 }
 
-/** ✏️ EDITE: itens da lista — misture presentes de casa e cotas de lua de mel */
 export const gifts: Gift[] = [
   {
     icon: '🥂',
     name: 'Jogo de taças de cristal',
     description: 'Para brindar os primeiros (e todos os) anos juntos.',
-    price: 'R$ 189',
-    url: 'https://www.magazineluiza.com.br/TODO-link-do-produto',
+    price: 189,
+    mercadoPagoUrl: 'https://mpago.la/2nShNo9',
   },
   {
     icon: '🍳',
     name: 'Jogo de panelas',
     description: 'A primeira receita de casados merece um bom time de panelas.',
-    price: 'R$ 349',
-    url: 'https://www.magazineluiza.com.br/TODO-link-do-produto',
+    price: 349,
+    mercadoPagoUrl: 'https://mpago.la/1CdCcHV',
   },
   {
     icon: '☕',
     name: 'Cafeteira',
     description: 'Porque bom dia começa com café.',
-    price: 'R$ 259',
-    url: 'https://www.amazon.com.br/TODO-link-do-produto',
+    price: 259,
+    mercadoPagoUrl: 'https://mpago.la/2iGY85B',
   },
   {
     icon: '🛏️',
     name: 'Jogo de cama king',
     description: '600 fios para um sono tranquilo.',
-    price: 'R$ 299',
-    url: 'https://www.amazon.com.br/TODO-link-do-produto',
+    price: 299,
+    mercadoPagoUrl: 'https://mpago.la/2R5ZAdj',
   },
   {
     icon: '🧺',
     name: 'Jogo de toalhas',
     description: 'Para o banho relaxante de domingo.',
-    price: 'R$ 159',
-    url: 'https://www.havan.com.br/TODO-link-do-produto',
+    price: 159,
+    mercadoPagoUrl: 'https://mpago.la/1mZVpJR',
   },
   {
     icon: '✈️',
     name: 'Cota lua de mel — Jantar em Paris',
     description: 'Uma noite inesquecível na Cidade Luz.',
-    price: 'R$ 300',
-    url: 'TODO-link-ou-pix',
+    price: 300,
+    mercadoPagoUrl: 'https://mpago.la/1uEbtuv',
   },
   {
     icon: '🗼',
     name: 'Cota lua de mel — Passeio',
     description: 'City tour e cruzeiro no Sena.',
-    price: 'R$ 250',
-    url: 'TODO-link-ou-pix',
+    price: 250,
+    mercadoPagoUrl: 'https://mpago.la/2tg2Mhh',
   },
   {
     icon: '🏝️',
     name: 'Cota lua de mel — Diária na praia',
     description: 'Para esticar a viagem e descansar.',
-    price: 'R$ 400',
-    url: 'TODO-link-ou-pix',
+    price: 400,
+    mercadoPagoUrl: 'https://mpago.la/1RBcy3r',
   },
 ];

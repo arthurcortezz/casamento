@@ -13,12 +13,11 @@ export const site = {
   rsvp: {
     googleFormUrl: 'https://forms.gle/QDj9fnm8xEMYxxFV9',
     rsvpDeadline: '10 de dezembro de 2026',
-    whatsappNumber: '5582998072790',
+    whatsappNumber: '558288350421',
     whatsappMessage: 'Olá! Quero confirmar minha presença no casamento de Arthur & Emanuela 💍',
   },
 
   contacts: {
-    email: 'arthur.emanuela@email.com',
-    phoneLabel: '(82) 99807-2790',
+    phoneLabel: '(82) 98835-0421',
   },
 };

@@ -27,12 +27,11 @@ Tudo está em **`src/data/`** — os campos marcados com `TODO` são placeholder
 | `src/data/site.ts` | Nomes, **data/hora** (formato ISO), cidade, hashtag, RSVP, contatos    |
 | `src/data/info.ts` | Nossa história, cerimônia/recepção, dress code, avisos, FAQ            |
 | `src/data/venue.ts`| Local, endereço, transporte, hotéis                                    |
-| `src/data/gifts.ts`| Lista de presentes, links das lojas, **dados do Pix**                  |
+| `src/data/gifts.ts`| Lista de presentes, valores, links do Mercado Pago, **dados do Pix**   |
 
 Outros pontos para personalizar:
 
-- **Fotos/QR Code:** substitua `public/images/pix-qr.svg` (gere o QR no app do banco) e
-  `public/images/og-cover.svg` (ideal: JPG ~1200×630 para compartilhamento no WhatsApp).
+- **Foto de capa:** substitua `public/images/og-cover.svg` (ideal: JPG ~1200×630 para compartilhamento no WhatsApp).
 - **Fontes e cores:** `src/styles/global.css` (bloco `@theme`) + `<link>` no `src/layouts/Base.astro`.
 - **Domínio:** `astro.config.mjs` → opção `site`.
 
@@ -43,8 +42,8 @@ Outros pontos para personalizar:
 - [ ] Google Forms criado + link em `site.ts → rsvp.googleFormUrl`
 - [ ] WhatsApp real em formato internacional (`55DD9XXXXXXXX`)
 - [x] Horário da festa: 16h30 (não haverá cerimônia)
-- [ ] Links reais dos presentes e dados do Pix (`gifts.ts`)
-- [ ] QR Code Pix real salvo em `public/images/`
+- [ ] Valores dos presentes e dados do Pix (`gifts.ts`) — teste um Pix de verdade antes de divulgar
+- [ ] Links de pagamento do Mercado Pago (cartão) em `gifts.ts → mercadoPagoUrl`
 - [ ] Foto de capa para compartilhamento (og-image)
 - [ ] Domínio real no `astro.config.mjs`
 
@@ -56,6 +55,24 @@ Outros pontos para personalizar:
    **Restrição alimentar/alergia?** (texto), **Mensagem aos noivos** (parágrafo).
 3. Aba **Respostas** → clique no ícone de planilha → cria a planilha que vocês acompanham.
 4. Copie o link "Enviar" e cole em `site.ts → rsvp.googleFormUrl`.
+
+## 💳 Pagamento dos presentes (Pix + cartão, sem back-end)
+
+Cada presente abre um modal com duas opções:
+
+- **Pix:** QR Code e "Pix copia e cola" com o **valor exato** do presente, gerados no build
+  (padrão BR Code do Banco Central) a partir de `pix.qrKey`, `pix.holder` e `pix.city`.
+  O dinheiro cai direto na conta da chave — não passa por API nenhuma.
+- **Cartão de crédito:** botão para o **Link de Pagamento do Mercado Pago** (Checkout Pro),
+  onde o convidado paga com cartão (parcelado) na página segura do MP.
+
+Para criar os links: [mercadopago.com.br](https://www.mercadopago.com.br) → **Seu negócio →
+Link de pagamento** (ou no app: **Cobrar → Link de pagamento**) → crie um link por presente
+com o mesmo valor e cole em `mercadoPagoUrl`. Presentes sem link mostram só o Pix.
+
+> **Por que não o Checkout Transparente?** Ele exige criar o pagamento com o *Access Token*,
+> que é secreto e só pode ficar em um servidor. Se ficasse no navegador, qualquer pessoa
+> poderia usá-lo na sua conta. Os pagamentos aparecem em **Atividades** no app do Mercado Pago.
 
 ## 🚀 Deploy gratuito
 
