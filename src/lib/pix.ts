@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
  * Pix "copia e cola" (BR Code estático — padrão EMV do Banco Central)
- * Gerado no build: não depende de API nem de back-end.
+ * Roda no build e no navegador: não depende de API nem de back-end.
  * ═══════════════════════════════════════════════════════════════ */
 
 import QRCode from 'qrcode';

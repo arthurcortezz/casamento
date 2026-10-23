@@ -1,113 +1,225 @@
 ---
 import SectionTitle from './SectionTitle.astro';
 import PixCard from './PixCard.astro';
-import { gifts, giftsIntro, pix, type Gift } from '../data/gifts';
+import { card, gifts, giftsIntro, priceRanges } from '../data/gifts';
 import { site } from '../data/site';
-import { pixPayload, pixQrSvg } from '../lib/pix';
 
-const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+const { googleFormId, nameEntry, messageEntry, giftEntry } = site.giftMessages;
+const formAction = `https://docs.google.com/forms/d/e/${googleFormId}/formResponse`;
 
-// Pix com o valor exato de cada presente, gerado no build
-const giftsWithPix = await Promise.all(
-  gifts.map(async (gift: Gift, i) => {
-    const payload = pixPayload({
-      key: pix.qrKey,
-      name: pix.holder,
-      city: pix.city,
-      amount: gift.price,
-      txid: `PRESENTE${i + 1}`,
-    });
-    const waText = `Oi! Acabei de dar o presente "${gift.name}" (${brl.format(gift.price)}) pelo site 🎁`;
-    return {
-      ...gift,
-      id: `presente-${i + 1}`,
-      payload,
-      qrSvg: await pixQrSvg(payload),
-      waHref: `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURIComponent(waText)}`,
-    };
-  }),
-);
+const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const brlShort = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+
+const categories = [...new Set(gifts.map((gift) => gift.category))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+const rangeLabel = ({ min, max }: { min: number; max?: number }) =>
+  max === undefined
+    ? `Mais de ${brlShort.format(min)}`
+    : min === 0
+      ? `Até ${brlShort.format(max)}`
+      : `De ${brlShort.format(min)} até ${brlShort.format(max)}`;
+
+const selectClass =
+  'w-full appearance-none rounded-full border border-sage-200 bg-white py-3 pr-10 pl-5 text-sm text-charcoal shadow-soft outline-none transition focus:border-sage-500 focus:ring-2 focus:ring-sage-200';
+const inputClass =
+  'w-full rounded-xl border border-sage-200 bg-ivory px-4 py-2.5 text-sm outline-none transition focus:border-sage-500 focus:ring-2 focus:ring-sage-200';
 ---
 
 <section id="presentes" class="bg-ivory py-20 sm:py-28">
   <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <SectionTitle eyebrow="Se quiser nos mimar" title="Lista de Presentes" />
 
-    <p class="reveal mx-auto mb-12 max-w-2xl text-center text-charcoal/80">{giftsIntro}</p>
+    <p class="reveal mx-auto mb-10 max-w-2xl text-center text-charcoal/80">{giftsIntro}</p>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div class="reveal mx-auto mb-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
+      <label class="relative col-span-2 block sm:col-span-1">
+        <span class="sr-only">Categoria</span>
+        <select id="gift-category" class={selectClass}>
+          <option value="">Categoria: Todas</option>
+          {categories.map((category) => <option value={category}>{category}</option>)}
+        </select>
+        <svg class="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-sage-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+        </svg>
+      </label>
+      <label class="relative block">
+        <span class="sr-only">Preço</span>
+        <select id="gift-price" class={selectClass}>
+          <option value="">Preço: Todos</option>
+          {priceRanges.map((range, i) => <option value={i}>{rangeLabel(range)}</option>)}
+        </select>
+        <svg class="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-sage-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+        </svg>
+      </label>
+      <label class="relative block">
+        <span class="sr-only">Ordenar por</span>
+        <select id="gift-order" class={selectClass}>
+          <option value="minor">Menor preço</option>
+          <option value="major">Maior preço</option>
+        </select>
+        <svg class="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-sage-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+        </svg>
+      </label>
+    </div>
+
+    <div id="gift-grid" class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 xl:grid-cols-4">
       {
-        giftsWithPix.map((gift) => (
-          <article class="reveal flex flex-col rounded-2xl border border-sage-200/70 bg-white p-6 shadow-soft transition hover:-translate-y-1">
-            <div class="grid h-16 w-16 place-items-center rounded-2xl bg-sand text-3xl" aria-hidden="true">
-              {gift.icon}
+        gifts.map((gift, i) => (
+          <article
+            data-gift={i}
+            class="reveal flex flex-col overflow-hidden rounded-2xl border border-sage-200/70 bg-white shadow-soft transition hover:-translate-y-1"
+          >
+            <img src={gift.image} alt="" loading="lazy" width="600" height="600" class="aspect-square w-full object-cover" />
+            <div class="flex flex-1 flex-col p-4 sm:p-5">
+              <p class="text-[0.7rem] font-semibold tracking-wider text-sage-600 uppercase">{gift.category}</p>
+              <h3 class="mt-1 flex-1 font-display text-base text-charcoal sm:text-lg">{gift.name}</h3>
+              <p class="mt-3 font-display text-lg text-gold-600 sm:text-xl">{brl.format(gift.price)}</p>
+              <button
+                type="button"
+                data-add={i}
+                class="mt-3 rounded-full bg-sage-800 px-4 py-2.5 text-sm font-semibold text-ivory transition hover:bg-sage-600"
+              >
+                <span>Presentear 🎁</span>
+              </button>
             </div>
-            <h3 class="mt-4 font-display text-lg text-charcoal">{gift.name}</h3>
-            <p class="mt-2 flex-1 text-sm leading-relaxed text-charcoal/70">{gift.description}</p>
-            <p class="mt-4 font-display text-xl text-gold-600">{brl.format(gift.price)}</p>
-            <button
-              type="button"
-              data-gift-open={gift.id}
-              class="mt-4 inline-block rounded-full bg-sage-800 px-5 py-2.5 text-center text-sm font-semibold text-ivory transition hover:bg-sage-600"
-            >
-              Presentear 🎁
-            </button>
           </article>
         ))
       }
     </div>
+    <p id="gift-empty" hidden class="py-10 text-center text-charcoal/60">Nenhum presente nesse filtro.</p>
 
-    <div class="reveal mt-10">
+    <div class="reveal mt-12">
       <PixCard />
     </div>
   </div>
 
-  {
-    giftsWithPix.map((gift) => (
-      <dialog
-        id={gift.id}
-        aria-labelledby={`${gift.id}-title`}
-        class="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl bg-white p-0 text-charcoal shadow-soft backdrop:bg-charcoal/60"
-      >
-        <div class="p-6 sm:p-8">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <p class="text-xs font-bold tracking-widest text-sage-600 uppercase">Presentear</p>
-              <h3 id={`${gift.id}-title`} class="mt-1 font-display text-xl">
-                {gift.icon} {gift.name}
-              </h3>
-              <p class="mt-1 font-display text-2xl text-gold-600">{brl.format(gift.price)}</p>
-            </div>
-            <form method="dialog">
-              <button
-                class="grid h-9 w-9 place-items-center rounded-full text-xl text-charcoal/60 transition hover:bg-sand hover:text-charcoal"
-                aria-label="Fechar"
-              >
-                ×
-              </button>
-            </form>
-          </div>
+  <!-- Botão flutuante da sacola (aparece quando há presentes nela) -->
+  <button
+    id="bag-open"
+    type="button"
+    hidden
+    class="fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full bg-gold-500 py-3.5 pr-6 pl-5 text-sm font-bold whitespace-nowrap text-white shadow-soft transition hover:bg-gold-600"
+  >
+    <span aria-hidden="true">🛍️</span>
+    <span>Sacola (<span data-bag-count>0</span>) · <span data-bag-total></span></span>
+  </button>
 
-          <h4 class="mt-6 text-sm font-bold">Pix</h4>
-          <p class="mt-1 text-sm text-charcoal/70">
-            Escaneie o QR Code ou copie o código e cole em <strong>Pix copia e cola</strong> no app do seu banco. O valor
-            já vem preenchido.
-          </p>
-          <div
-            class="mx-auto mt-4 w-44 rounded-xl border border-sage-200 p-2 [&>svg]:h-auto [&>svg]:w-full"
-            role="img"
-            aria-label={`QR Code Pix de ${brl.format(gift.price)}`}
-            set:html={gift.qrSvg}
-          />
+  <dialog
+    id="bag"
+    aria-labelledby="bag-title"
+    class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md rounded-2xl bg-white p-0 text-charcoal shadow-soft backdrop:bg-charcoal/60"
+  >
+    <div class="p-6 sm:p-8">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold tracking-widest text-sage-600 uppercase">Sacola de presentes</p>
+          <h3 id="bag-title" class="mt-1 font-display text-xl" data-bag-heading>Seus presentes</h3>
+        </div>
+        <form method="dialog">
           <button
-            type="button"
-            data-copy={gift.payload}
-            class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold-500 px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-gold-600"
+            class="grid h-9 w-9 place-items-center rounded-full text-xl text-charcoal/60 transition hover:bg-sand hover:text-charcoal"
+            aria-label="Fechar"
           >
-            <span>Copiar Pix copia e cola</span>
+            ×
           </button>
+        </form>
+      </div>
 
-          {gift.mercadoPagoUrl && (
+      <!-- Etapa 1: itens -->
+      <div data-step="items">
+        <ul data-bag-list class="mt-5 divide-y divide-sage-200/70"></ul>
+        <p data-bag-empty class="mt-6 text-center text-sm text-charcoal/60">Sua sacola de presentes está vazia.</p>
+        <div class="mt-5 flex items-center justify-between border-t border-sage-200 pt-4">
+          <span class="text-sm font-bold">Total</span>
+          <span class="font-display text-2xl text-gold-600" data-bag-total></span>
+        </div>
+        <button
+          type="button"
+          data-go="details"
+          class="mt-5 w-full rounded-full bg-sage-800 px-6 py-3 text-sm font-bold text-ivory transition hover:bg-sage-600 disabled:opacity-50"
+        >
+          Continuar
+        </button>
+        <button
+          type="button"
+          data-close
+          class="mt-3 w-full rounded-full px-6 py-2 text-sm font-semibold text-sage-800 transition hover:bg-sand"
+        >
+          Adicionar mais presentes
+        </button>
+      </div>
+
+      <!-- Etapa 2: nome + mensagem (enviados para o Google Forms) -->
+      <form data-step="details" hidden action={formAction} method="POST" class="mt-6 space-y-4">
+        <input type="hidden" name={giftEntry} />
+        <div>
+          <label for="bag-name" class="mb-1.5 block text-sm font-bold">Quem está dando o presente?</label>
+          <input
+            id="bag-name"
+            name={nameEntry}
+            type="text"
+            required
+            maxlength="80"
+            autocomplete="name"
+            placeholder="Ex.: Família Silva ou Daniel, Carol e Bernardo"
+            class={inputClass}
+          />
+        </div>
+        <div>
+          <label for="bag-message" class="mb-1.5 block text-sm font-bold">
+            Mensagem para os noivos <span class="font-normal text-charcoal/50">(opcional)</span>
+          </label>
+          <textarea id="bag-message" name={messageEntry} rows="4" maxlength="1000" class:list={[inputClass, 'resize-y']}
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="w-full rounded-full bg-sage-800 px-6 py-3 text-sm font-bold text-ivory transition hover:bg-sage-600 disabled:opacity-60"
+        >
+          Continuar para o pagamento
+        </button>
+        <button
+          type="button"
+          data-go="items"
+          class="w-full rounded-full px-6 py-2 text-sm font-semibold text-sage-800 transition hover:bg-sand"
+        >
+          Voltar
+        </button>
+        <p data-details-error role="alert" hidden class="text-center text-sm text-rose-400">
+          Não foi possível enviar agora. Tente novamente em instantes.
+        </p>
+      </form>
+
+      <!-- Etapa 3: pagamento do total -->
+      <div data-step="payment" hidden>
+        <p class="mt-6 rounded-xl bg-sage-100 px-4 py-3 text-center text-sm text-sage-800">
+          Obrigado pelo carinho! 💛 Agora é só pagar o total de <strong data-bag-total></strong>.
+        </p>
+
+        <h4 class="mt-6 text-sm font-bold">Pix</h4>
+        <p class="mt-1 text-sm text-charcoal/70">
+          Escaneie o QR Code ou copie o código e cole em <strong>Pix copia e cola</strong> no app do seu banco. O valor já
+          vem preenchido.
+        </p>
+        <div
+          data-pix-qr
+          class="mx-auto mt-4 aspect-square w-44 rounded-xl border border-sage-200 p-2 [&>svg]:h-auto [&>svg]:w-full"
+          role="img"
+          aria-label="QR Code Pix com o valor total"
+        >
+        </div>
+        <button
+          type="button"
+          data-copy=""
+          data-pix-copy
+          class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold-500 px-6 py-3 text-sm font-bold text-white shadow-soft transition hover:bg-gold-600"
+        >
+          <span>Copiar Pix copia e cola</span>
+        </button>
+
+        {
+          card.infinitePayHandle && (
             <>
               <div class="my-6 flex items-center gap-3 text-xs text-charcoal/50 uppercase">
                 <span class="h-px flex-1 bg-sage-200" />
@@ -116,39 +228,289 @@ const giftsWithPix = await Promise.all(
               </div>
               <h4 class="text-sm font-bold">Cartão de crédito</h4>
               <p class="mt-1 text-sm text-charcoal/70">
-                Pagamento seguro pelo Mercado Pago, com opção de parcelamento.
+                Parcele em até <strong>12x</strong> no cartão de crédito. Pagamento seguro pela InfinitePay — as parcelas
+                são escolhidas na tela de pagamento.
               </p>
-              <a
-                href={gift.mercadoPagoUrl}
-                target="_blank"
-                rel="noopener"
-                class="mt-4 inline-flex w-full items-center justify-center rounded-full bg-sage-800 px-6 py-3 text-sm font-bold text-ivory transition hover:bg-sage-600"
+              <button
+                type="button"
+                data-card-pay
+                class="mt-4 inline-flex w-full items-center justify-center rounded-full bg-sage-800 px-6 py-3 text-sm font-bold text-ivory transition hover:bg-sage-600 disabled:opacity-60"
               >
-                Pagar com cartão 💳
-              </a>
+                Pagar com cartão em até 12x 💳
+              </button>
+              <p data-card-error role="alert" hidden class="mt-2 text-center text-sm text-rose-400">
+                Não foi possível abrir o pagamento com cartão. Tente novamente ou use o Pix.
+              </p>
             </>
-          )}
+          )
+        }
 
-          <p class="mt-6 text-center text-xs text-charcoal/60">
-            Já presenteou?{' '}
-            <a href={gift.waHref} target="_blank" rel="noopener" class="font-bold text-sage-800 underline">
-              Avise os noivos pelo WhatsApp
-            </a>
-          </p>
-        </div>
-      </dialog>
-    ))
-  }
+        <p class="mt-6 text-center text-xs text-charcoal/60">
+          Já presenteou?
+          <a data-whatsapp target="_blank" rel="noopener" class="font-bold text-sage-800 underline">
+            Avise os noivos pelo WhatsApp
+          </a>
+        </p>
+        <button
+          type="button"
+          data-finish
+          class="mt-4 w-full rounded-full px-6 py-2 text-sm font-semibold text-sage-800 transition hover:bg-sand"
+        >
+          Já paguei — esvaziar sacola
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <template id="bag-item">
+    <li class="flex items-center gap-3 py-3">
+      <img alt="" width="56" height="56" class="h-14 w-14 shrink-0 rounded-xl object-cover" />
+      <div class="min-w-0 flex-1">
+        <p data-name class="truncate text-sm font-semibold"></p>
+        <p data-price class="text-sm text-gold-600"></p>
+      </div>
+      <div class="flex items-center gap-1">
+        <button
+          type="button"
+          data-dec
+          class="grid h-8 w-8 place-items-center rounded-full border border-sage-200 text-charcoal/70 transition hover:bg-sand"
+          >−</button
+        >
+        <span data-qty class="w-6 text-center text-sm font-bold"></span>
+        <button
+          type="button"
+          data-inc
+          class="grid h-8 w-8 place-items-center rounded-full border border-sage-200 text-charcoal/70 transition hover:bg-sand"
+          >+</button
+        >
+      </div>
+    </li>
+  </template>
 </section>
 
 <script>
-  // Abre o modal de pagamento do presente; clicar fora do conteúdo fecha
-  document.querySelectorAll<HTMLButtonElement>('[data-gift-open]').forEach((btn) => {
-    const dialog = document.getElementById(btn.dataset.giftOpen ?? '');
-    if (!(dialog instanceof HTMLDialogElement)) return;
-    btn.addEventListener('click', () => dialog.showModal());
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close();
+  import { card, gifts, pix, priceRanges } from '../data/gifts';
+  import { site } from '../data/site';
+  import { pixPayload, pixQrSvg } from '../lib/pix';
+
+  const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+  // Valores em centavos para não acumular erro de ponto flutuante (ex.: 93,14 × 3)
+  const cents = (reais: number) => Math.round(reais * 100);
+
+  /* ── Filtros e ordenação ─────────────────────────────────────── */
+  const grid = document.getElementById('gift-grid')!;
+  const empty = document.getElementById('gift-empty')!;
+  const categorySelect = document.getElementById('gift-category') as HTMLSelectElement;
+  const priceSelect = document.getElementById('gift-price') as HTMLSelectElement;
+  const orderSelect = document.getElementById('gift-order') as HTMLSelectElement;
+  const cards = [...grid.querySelectorAll<HTMLElement>('[data-gift]')];
+
+  function applyFilters() {
+    const category = categorySelect.value;
+    const range = priceSelect.value === '' ? undefined : priceRanges[Number(priceSelect.value)];
+    const direction = orderSelect.value === 'major' ? -1 : 1;
+    const giftOf = (el: HTMLElement) => gifts[Number(el.dataset.gift)];
+
+    let visible = 0;
+    for (const el of [...cards].sort((a, b) => direction * (giftOf(a).price - giftOf(b).price))) {
+      const { price, category: giftCategory } = giftOf(el);
+      el.hidden = !(
+        (!category || giftCategory === category) &&
+        (!range || ((range.min === 0 || price > range.min) && (range.max === undefined || price <= range.max)))
+      );
+      if (!el.hidden) visible++;
+      grid.append(el);
+    }
+    empty.hidden = visible > 0;
+  }
+  [categorySelect, priceSelect, orderSelect].forEach((select) => select.addEventListener('change', applyFilters));
+  applyFilters();
+
+  /* ── Sacola (guardada no navegador do convidado) ─────────────── */
+  const STORAGE_KEY = 'sacola-presentes';
+  const bag = new Map<number, number>(loadBag());
+
+  function loadBag(): [number, number][] {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+      return Array.isArray(saved) ? saved.filter(([i, qty]) => gifts[i] && qty > 0) : [];
+    } catch {
+      return [];
+    }
+  }
+  function saveBag() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...bag]));
+    } catch {
+      // Sem armazenamento (aba anônima etc.): a sacola só vive nesta página
+    }
+  }
+
+  const totalCents = () => [...bag].reduce((sum, [i, qty]) => sum + cents(gifts[i].price) * qty, 0);
+  const itemCount = () => [...bag.values()].reduce((sum, qty) => sum + qty, 0);
+  const summary = () =>
+    [...bag].map(([i, qty]) => `${qty > 1 ? `${qty}x ` : ''}${gifts[i].name} (${brl.format(gifts[i].price * qty)})`).join(' + ');
+
+  const dialog = document.getElementById('bag') as HTMLDialogElement;
+  const openButton = document.getElementById('bag-open')!;
+  const list = dialog.querySelector('[data-bag-list]')!;
+  const itemTemplate = document.getElementById('bag-item') as HTMLTemplateElement;
+
+  function render() {
+    const total = brl.format(totalCents() / 100);
+    document.querySelectorAll('[data-bag-total]').forEach((el) => (el.textContent = total));
+    document.querySelectorAll('[data-bag-count]').forEach((el) => (el.textContent = String(itemCount())));
+    openButton.hidden = bag.size === 0;
+    dialog.querySelector<HTMLElement>('[data-bag-empty]')!.hidden = bag.size > 0;
+    dialog.querySelector<HTMLButtonElement>('[data-go="details"]')!.disabled = bag.size === 0;
+
+    list.replaceChildren(
+      ...[...bag].map(([i, qty]) => {
+        const row = itemTemplate.content.firstElementChild!.cloneNode(true) as HTMLElement;
+        row.querySelector('img')!.src = gifts[i].image;
+        row.querySelector('[data-name]')!.textContent = gifts[i].name;
+        row.querySelector('[data-price]')!.textContent = brl.format(gifts[i].price * qty);
+        row.querySelector('[data-qty]')!.textContent = String(qty);
+        row.querySelector('[data-dec]')!.setAttribute('aria-label', `Remover um ${gifts[i].name}`);
+        row.querySelector('[data-inc]')!.setAttribute('aria-label', `Adicionar mais um ${gifts[i].name}`);
+        row.querySelector('[data-dec]')!.addEventListener('click', () => setQty(i, qty - 1));
+        row.querySelector('[data-inc]')!.addEventListener('click', () => setQty(i, qty + 1));
+        return row;
+      }),
+    );
+  }
+
+  function setQty(i: number, qty: number) {
+    if (qty > 0) bag.set(i, qty);
+    else bag.delete(i);
+    saveBag();
+    render();
+  }
+
+  grid.querySelectorAll<HTMLButtonElement>('[data-add]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const i = Number(btn.dataset.add);
+      setQty(i, (bag.get(i) ?? 0) + 1);
+      const label = btn.querySelector('span')!;
+      label.textContent = 'Na sacola ✓';
+      setTimeout(() => (label.textContent = 'Presentear 🎁'), 1500);
     });
   });
+
+  /* ── Etapas do checkout ──────────────────────────────────────── */
+  const headings = { items: 'Seus presentes', details: 'Quem está presenteando?', payment: 'Pagamento' };
+  type Step = keyof typeof headings;
+
+  function showStep(step: Step) {
+    dialog.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => (el.hidden = el.dataset.step !== step));
+    dialog.querySelector('[data-bag-heading]')!.textContent = headings[step];
+  }
+
+  openButton.addEventListener('click', () => {
+    // Se a sacola mudou depois de chegar no pagamento, recomeça para registrar os presentes certos
+    if (dialog.querySelector<HTMLElement>('[data-step="payment"]')!.hidden || paidSummary !== summary()) {
+      showStep('items');
+    }
+    dialog.showModal();
+  });
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.querySelector('[data-close]')!.addEventListener('click', () => dialog.close());
+  dialog.querySelectorAll<HTMLButtonElement>('[data-go]').forEach((btn) => {
+    btn.addEventListener('click', () => showStep(btn.dataset.go as Step));
+  });
+
+  // Identifica o pedido no Pix (txid), na InfinitePay e na planilha das mensagens
+  let orderId = '';
+  let paidSummary = '';
+
+  // Envia nome + mensagem + presentes para o Google Forms e libera o pagamento.
+  // A resposta é opaca (no-cors): só dá pra saber se a rede falhou, não se o Google gravou.
+  const detailsForm = dialog.querySelector<HTMLFormElement>('[data-step="details"]')!;
+  const detailsError = detailsForm.querySelector<HTMLElement>('[data-details-error]')!;
+  const detailsButton = detailsForm.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+  detailsForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    orderId = `SITE${Date.now().toString(36).toUpperCase()}`;
+    paidSummary = summary();
+    detailsForm.querySelector<HTMLInputElement>('input[type="hidden"]')!.value =
+      `Pedido ${orderId}: ${paidSummary} — Total ${brl.format(totalCents() / 100)}`;
+
+    detailsButton.disabled = true;
+    detailsError.hidden = true;
+    try {
+      await fetch(detailsForm.action, { method: 'POST', mode: 'no-cors', body: new FormData(detailsForm) });
+      await renderPayment();
+      showStep('payment');
+    } catch {
+      detailsError.hidden = false;
+    } finally {
+      detailsButton.disabled = false;
+    }
+  });
+
+  async function renderPayment() {
+    const amount = totalCents() / 100;
+    const payload = pixPayload({ key: pix.qrKey, name: pix.holder, city: pix.city, amount, txid: orderId });
+    dialog.querySelector('[data-pix-qr]')!.innerHTML = await pixQrSvg(payload);
+    dialog.querySelector<HTMLElement>('[data-pix-copy]')!.dataset.copy = payload;
+
+    const waText = `Oi! Acabei de dar pelo site: ${paidSummary} — total ${brl.format(amount)} 🎁`;
+    dialog.querySelector<HTMLAnchorElement>('[data-whatsapp]')!.href =
+      `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURIComponent(waText)}`;
+  }
+
+  // Cartão: cria um link de checkout da InfinitePay com o total da sacola (a API só pede a InfiniteTag).
+  // A janela é aberta já no clique, senão o navegador bloqueia o popup depois do fetch.
+  const cardButton = dialog.querySelector<HTMLButtonElement>('[data-card-pay]');
+  const cardError = dialog.querySelector<HTMLElement>('[data-card-error]');
+
+  cardButton?.addEventListener('click', async () => {
+    const desktop = !window.matchMedia('(pointer: coarse)').matches;
+    const width = Math.min(520, screen.availWidth);
+    const height = Math.min(760, screen.availHeight);
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    const popup = window.open('', 'pagamento', desktop ? `popup,width=${width},height=${height},left=${left},top=${top}` : '');
+    if (popup) popup.opener = null;
+
+    cardButton.disabled = true;
+    cardError!.hidden = true;
+    try {
+      const response = await fetch('https://api.checkout.infinitepay.io/links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          handle: card.infinitePayHandle,
+          order_nsu: orderId,
+          redirect_url: `${location.origin}${location.pathname}#presentes`,
+          items: [...bag].map(([i, qty]) => ({ quantity: qty, price: cents(gifts[i].price), description: gifts[i].name })),
+        }),
+      });
+      const data = await response.json();
+      const url: string | undefined = data.url ?? data.link ?? data.checkout_url;
+      if (!response.ok || !url) throw new Error(data.message ?? `HTTP ${response.status}`);
+      if (popup) popup.location.href = url;
+      else location.href = url;
+    } catch (error) {
+      console.error('InfinitePay:', error);
+      popup?.close();
+      cardError!.hidden = false;
+    } finally {
+      cardButton.disabled = false;
+    }
+  });
+
+  dialog.querySelector('[data-finish]')!.addEventListener('click', () => {
+    bag.clear();
+    saveBag();
+    render();
+    detailsForm.reset();
+    showStep('items');
+    dialog.close();
+  });
+
+  render();
 </script>
