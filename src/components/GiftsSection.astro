@@ -88,6 +88,16 @@ const inputClass =
       }
     </div>
     <p id="gift-empty" hidden class="py-10 text-center text-charcoal/60">Nenhum presente nesse filtro.</p>
+    <div class="mt-10 text-center">
+      <button
+        id="gift-more"
+        type="button"
+        hidden
+        class="rounded-full border-2 border-sage-800 px-8 py-3 text-sm font-bold text-sage-800 transition hover:bg-sage-800 hover:text-ivory"
+      >
+        Ver mais presentes (<span data-remaining></span>)
+      </button>
+    </div>
 
     <div class="reveal mt-12">
       <PixCard />
@@ -303,7 +313,12 @@ const inputClass =
   const categorySelect = document.getElementById('gift-category') as HTMLSelectElement;
   const priceSelect = document.getElementById('gift-price') as HTMLSelectElement;
   const orderSelect = document.getElementById('gift-order') as HTMLSelectElement;
+  const moreButton = document.getElementById('gift-more')!;
   const cards = [...grid.querySelectorAll<HTMLElement>('[data-gift]')];
+
+  // Mostra os presentes aos poucos: a lista é grande demais para exibir tudo de uma vez
+  const PAGE_SIZE = 24;
+  let shown = PAGE_SIZE;
 
   function applyFilters() {
     const category = categorySelect.value;
@@ -311,19 +326,30 @@ const inputClass =
     const direction = orderSelect.value === 'major' ? -1 : 1;
     const giftOf = (el: HTMLElement) => gifts[Number(el.dataset.gift)];
 
-    let visible = 0;
+    let matches = 0;
     for (const el of [...cards].sort((a, b) => direction * (giftOf(a).price - giftOf(b).price))) {
       const { price, category: giftCategory } = giftOf(el);
-      el.hidden = !(
+      const match =
         (!category || giftCategory === category) &&
-        (!range || ((range.min === 0 || price > range.min) && (range.max === undefined || price <= range.max)))
-      );
-      if (!el.hidden) visible++;
+        (!range || ((range.min === 0 || price > range.min) && (range.max === undefined || price <= range.max)));
+      if (match) matches++;
+      el.hidden = !match || matches > shown;
       grid.append(el);
     }
-    empty.hidden = visible > 0;
+    empty.hidden = matches > 0;
+    moreButton.hidden = matches <= shown;
+    moreButton.querySelector('[data-remaining]')!.textContent = String(matches - shown);
   }
-  [categorySelect, priceSelect, orderSelect].forEach((select) => select.addEventListener('change', applyFilters));
+  [categorySelect, priceSelect, orderSelect].forEach((select) =>
+    select.addEventListener('change', () => {
+      shown = PAGE_SIZE;
+      applyFilters();
+    }),
+  );
+  moreButton.addEventListener('click', () => {
+    shown += PAGE_SIZE;
+    applyFilters();
+  });
   applyFilters();
 
   /* ── Sacola (guardada no navegador do convidado) ─────────────── */
