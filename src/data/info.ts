@@ -84,11 +84,11 @@ export const notices = [
   },
   {
     icon: '⏰',
-    text: 'Pontualidade: a festa começará pontualmente às 16h30.',
+    text: 'Pontualidade: a cerimônia começará pontualmente às 16h30.',
   },
   {
     icon: '💐',
-    text: 'Sem necessidade de levar flores ou presentes no dia — seu carinho já é presente!',
+    text: 'Não precisa levar presente no dia da festa: preparamos uma lista de presentes online — é só conferir logo abaixo! 🎁',
   },
 ];
 
