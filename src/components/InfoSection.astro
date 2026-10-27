@@ -107,7 +107,10 @@ const rotaUrl = (address: string) =>
             notices.map((n) => (
               <li class="flex gap-3">
                 <span class="shrink-0 text-lg" aria-hidden="true">{n.icon}</span>
-                <span>{n.text}</span>
+                <div class="space-y-2">
+                  {'title' in n && <p class="font-display text-lg text-charcoal">{n.title}</p>}
+                  {n.text.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+                </div>
               </li>
             ))
           }

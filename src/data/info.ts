@@ -87,8 +87,10 @@ export const notices = [
     text: 'Pontualidade: a cerimônia começará pontualmente às 16h30.',
   },
   {
-    icon: '💐',
-    text: 'Não precisa levar presente no dia da festa: preparamos uma lista de presentes online — é só conferir logo abaixo! 🎁',
+    icon: '🌷',
+    title: 'Um carinho para a nossa nova história',
+    // Linha em branco (\n\n) separa os parágrafos
+    text: 'Estamos muito felizes em compartilhar esse momento tão especial com pessoas queridas como você! Sua presença e seu carinho tornam essa nova etapa ainda mais bonita. ❤️\n\nPreparamos com muito carinho uma lista de presentes aqui mesmo no site, com opções que farão parte do início da nossa vida a dois. Ficaremos muito felizes com cada gesto de carinho e por ter você fazendo parte da nossa história! Fique à vontade para escolher: o presente será entregue diretamente na nossa residência. ❤️',
   },
 ];
 
