@@ -54,16 +54,19 @@ export const dressCode = {
     icon: '👗',
     title: 'Traje feminino',
     items: [
-      'Vestidos, macacões ou conjuntos são ótimas opções',
-      'Não é necessário vestido de festa',
+      'Vestidos, macacões ou conjuntos são ótimas opções.',
+      'Aposte em um look elegante, leve e com a sua personalidade!',
     ],
-    tip: 'Escolha peças em que se sinta linda e confortável para dançar a noite toda.',
+    tip: 'O mais importante é se sentir linda, confortável e pronta para aproveitar cada momento da nossa celebração.',
   },
   male: {
     icon: '👔',
     title: 'Traje masculino',
-    items: ['Calça e camisa', 'Não é necessário terno nem gravata'],
-    tip: 'Blazer é opcional — para quem quiser caprichar, fica elegante do mesmo jeito.',
+    items: [
+      'Calça e camisa são uma ótima combinação para a ocasião.',
+      'Para quem gosta de um toque a mais de elegância, o blazer é sempre bem-vindo!',
+    ],
+    tip: 'Escolha um look que combine com seu estilo e permita aproveitar cada momento da festa com conforto e liberdade para dançar!',
   },
 
   avoid: [
