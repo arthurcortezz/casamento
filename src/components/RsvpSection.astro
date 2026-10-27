@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { calendarUrl } from '../lib/calendar';
 
 const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURIComponent(site.rsvp.whatsappMessage)}`;
 ---
@@ -32,7 +33,7 @@ const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURICompon
     </div>
 
     <p class="reveal mt-8 text-sm text-ivory/70">
-      <a href="/calendar.ics" class="underline decoration-gold-400 underline-offset-4 transition hover:text-gold-400">
+      <a href={calendarUrl} target="_blank" rel="noopener" class="underline decoration-gold-400 underline-offset-4 transition hover:text-gold-400">
         📅 Adicionar ao meu calendário
       </a>
       · Dúvidas? Fale com a gente pelo WhatsApp <a rel="noopener" target="_blank" href={waHref}>{site.contacts.phoneLabel}</a>

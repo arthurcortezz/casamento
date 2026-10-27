@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { calendarUrl } from '../lib/calendar';
 
 const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURIComponent(site.rsvp.whatsappMessage)}`;
 ---
@@ -16,7 +17,7 @@ const waHref = `https://wa.me/${site.rsvp.whatsappNumber}?text=${encodeURICompon
       <a class="transition hover:text-gold-400" href={waHref} target="_blank" rel="noopener">
         WhatsApp {site.contacts.phoneLabel}
       </a>
-      <a class="transition hover:text-gold-400" href="/calendar.ics">Adicionar ao calendário 📅</a>
+      <a class="transition hover:text-gold-400" href={calendarUrl} target="_blank" rel="noopener">Adicionar ao calendário 📅</a>
     </div>
 
     <p class="mt-10 text-xs text-ivory/50">Feito com ❤️ pelos noivos · {new Date().getFullYear()}</p>

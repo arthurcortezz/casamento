@@ -8,6 +8,17 @@ const [firstPerson = '', secondPerson = ''] = site.coupleNames.split(' & ');
   id="inicio"
   class="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-sage-800 via-sage-700 to-sage-600 px-4 text-center text-ivory"
 >
+  <!-- Foto do casal ao fundo, com véu verde para manter o texto legível -->
+  <img
+    src="/images/casal.webp"
+    alt="Arthur e Emanuela de mãos dadas em frente à Catedral de Brasília"
+    width="1200"
+    height="1600"
+    fetchpriority="high"
+    class="absolute inset-0 h-full w-full object-cover object-[center_30%]"
+  />
+  <div class="absolute inset-0 bg-gradient-to-b from-sage-800/80 via-sage-700/60 to-sage-800/85" aria-hidden="true"></div>
+
   <!-- Decoração: anéis -->
   <svg class="pointer-events-none absolute -right-20 -top-20 h-96 w-96 opacity-15" viewBox="0 0 200 200" fill="none" aria-hidden="true">
     <circle cx="80" cy="100" r="45" stroke="#d4b96a" stroke-width="2"></circle>
